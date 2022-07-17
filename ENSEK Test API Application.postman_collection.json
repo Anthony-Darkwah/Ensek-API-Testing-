@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "post login",
+			"name": "login",
 			"event": [
 				{
 					"listen": "test",
@@ -29,7 +29,14 @@
 			],
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n  \"username\": \"test\",\n  \"password\": \"testing\"\n}",
@@ -79,9 +86,11 @@
 							}
 						},
 						"url": {
-							"raw": "//login",
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
 							"path": [
-								"",
 								"login"
 							]
 						}
@@ -185,7 +194,7 @@
 			]
 		},
 		{
-			"name": "post reset",
+			"name": "reset test data",
 			"event": [
 				{
 					"listen": "test",
@@ -235,9 +244,11 @@
 							}
 						],
 						"url": {
-							"raw": "//reset",
+							"raw": "{{baseUrl}}/reset",
+							"host": [
+								"{{baseUrl}}"
+							],
 							"path": [
-								"",
 								"reset"
 							]
 						}
@@ -442,7 +453,7 @@
 			]
 		},
 		{
-			"name": "put buy electric",
+			"name": "buy electric",
 			"event": [
 				{
 					"listen": "test",
@@ -586,7 +597,7 @@
 			]
 		},
 		{
-			"name": "put buy gas",
+			"name": "buy gas",
 			"event": [
 				{
 					"listen": "test",
@@ -730,7 +741,7 @@
 			]
 		},
 		{
-			"name": "put buy nuclear",
+			"name": "buy nuclear",
 			"event": [
 				{
 					"listen": "test",
@@ -874,7 +885,7 @@
 			]
 		},
 		{
-			"name": "put buy oil",
+			"name": "buy oil",
 			"event": [
 				{
 					"listen": "test",
@@ -1083,9 +1094,11 @@
 							}
 						],
 						"url": {
-							"raw": "//orders",
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
 							"path": [
-								"",
 								"orders"
 							]
 						}
@@ -1146,15 +1159,443 @@
 							}
 						],
 						"url": {
-							"raw": "//energy",
+							"raw": "{{baseUrl}}/energy",
+							"host": [
+								"{{baseUrl}}"
+							],
 							"path": [
-								"",
 								"energy"
 							]
 						}
 					},
 					"status": "OK",
 					"code": 200,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "buy electric above stock limit",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Body matches string - no electric fuel to purchased\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"There is no electric fuel to purchased!\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/buy/:id/:quantity",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"buy",
+						":id",
+						":quantity"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "3"
+						},
+						{
+							"key": "quantity",
+							"value": "6000"
+						}
+					]
+				},
+				"description": "Use to purchase energy units."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authorization",
+								"value": "<API Key>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/buy/:id/:quantity",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"buy",
+								":id",
+								":quantity"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "(Required) Energy type identifier."
+								},
+								{
+									"key": "quantity",
+									"value": "5",
+									"description": "(Required) Quantity to purchase."
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authorization",
+								"value": "<API Key>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/buy/:id/:quantity",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"buy",
+								":id",
+								":quantity"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "17978637",
+									"description": "(Required) Energy type identifier."
+								},
+								{
+									"key": "quantity",
+									"value": "17978637",
+									"description": "(Required) Quantity to purchase."
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "buy gas above stock limit",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Body should match string- no gas fuel to purchased\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"There is no gas fuel to purchased!\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/buy/:id/:quantity",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"buy",
+						":id",
+						":quantity"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						},
+						{
+							"key": "quantity",
+							"value": "5000"
+						}
+					]
+				},
+				"description": "Use to purchase energy units."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authorization",
+								"value": "<API Key>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/buy/:id/:quantity",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"buy",
+								":id",
+								":quantity"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "(Required) Energy type identifier."
+								},
+								{
+									"key": "quantity",
+									"value": "5",
+									"description": "(Required) Quantity to purchase."
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authorization",
+								"value": "<API Key>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/buy/:id/:quantity",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"buy",
+								":id",
+								":quantity"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "17978637",
+									"description": "(Required) Energy type identifier."
+								},
+								{
+									"key": "quantity",
+									"value": "17978637",
+									"description": "(Required) Quantity to purchase."
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "buy oil above stock limit",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Body matches string - no oil fuel to purchased\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"There is no oil fuel to purchased!\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/buy/:id/:quantity",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"buy",
+						":id",
+						":quantity"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "4"
+						},
+						{
+							"key": "quantity",
+							"value": "50"
+						}
+					]
+				},
+				"description": "Use to purchase energy units."
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authorization",
+								"value": "<API Key>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/buy/:id/:quantity",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"buy",
+								":id",
+								":quantity"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "(Required) Energy type identifier."
+								},
+								{
+									"key": "quantity",
+									"value": "5",
+									"description": "(Required) Quantity to purchase."
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"description": "Added as a part of security scheme: apikey",
+								"key": "Authorization",
+								"value": "<API Key>"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/buy/:id/:quantity",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"buy",
+								":id",
+								":quantity"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "17978637",
+									"description": "(Required) Energy type identifier."
+								},
+								{
+									"key": "quantity",
+									"value": "17978637",
+									"description": "(Required) Quantity to purchase."
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
 					"_postman_previewlanguage": "text",
 					"header": [
 						{
